@@ -2,11 +2,9 @@ import { LoaderFunction, Outlet, redirect } from "remix";
 import { authenticator } from "~/auth/auth.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await authenticator.isAuthenticated(request);
-
-  if (!user) {
-    return redirect("/login");
-  }
+  await authenticator.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
 
   if (request.url.endsWith("/assessments")) {
     return redirect("/assessments/daily");
@@ -17,8 +15,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Assessments() {
   return (
-    <main>
-      <h1>Assessments</h1>
+    <main className="h-full flex flex-col items-center pb-6">
+      <h1 className="">Assessments</h1>
       <Outlet />
     </main>
   );
