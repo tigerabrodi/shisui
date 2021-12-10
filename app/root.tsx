@@ -1,5 +1,6 @@
 import {
   Links,
+  LinksFunction,
   LiveReload,
   Meta,
   MetaFunction,
@@ -7,6 +8,10 @@ import {
   Scripts,
   useCatch,
 } from "remix";
+
+export const links: LinksFunction = () => {
+  return [{ rel: "stylesheet", href: "/tailwindcss" }];
+};
 
 export const meta: MetaFunction = () => {
   let description =

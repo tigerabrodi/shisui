@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;500;700&family=Merriweather:wght@400;700&display=swap");
+
+@layer base {
+  *,
+  *::after,
+  *::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+  }
+
+  html {
+    height: 100%;
+  }
+
+  body {
+    box-sizing: border-box;
+    background: #ebe1e1;
+    height: 100%;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  button {
+    border: none;
+    cursor: pointer;
+  }
+
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  input {
+    border: none;
+  }
+
+  input::placeholder {
+    color: inherit;
+    opacity: 0.6;
+  }
+
+  input:focus {
+    outline: none;
+  }
+
+  textarea {
+    border: none;
+  }
+
+  textarea::placeholder {
+    color: inherit;
+    opacity: 0.6;
+  }
+
+  textarea:focus {
+    outline: none;
+  }
+}
