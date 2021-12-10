@@ -1,3 +1,5 @@
+import { AssessmentFeed } from "~/components/AssessmentFeed";
+
 export default function Monthly() {
-  return <div>Monthly Assessments</div>;
+  return <AssessmentFeed />;
 }
