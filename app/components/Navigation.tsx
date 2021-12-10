@@ -1,11 +1,7 @@
 import * as React from "react";
 import { NavLink as RemixNavLink } from "remix";
 
-type Props = {
-  to: string;
-};
-
-const NavLink: React.FC<Props> = ({ to, children }) => (
+const NavLink: React.FC<{ to: string }> = ({ to, children }) => (
   <RemixNavLink
     className={({ isActive }) =>
       isActive
@@ -20,7 +16,7 @@ const NavLink: React.FC<Props> = ({ to, children }) => (
 
 export const Navigation = () => {
   return (
-    <nav className="h-16 w-full flex justify-between items-center px-5 md:px-24 md:w-4/5 lg:w-3/5 xl:w-2/5">
+    <nav className="h-16 w-full flex justify-between items-center px-5 md:h-24 md:px-24 md:w-4/5 lg:w-3/5 xl:w-2/5">
       <NavLink to="/assessments/daily">Daily</NavLink>
       <NavLink to="/assessments/weekly">Weekly</NavLink>
       <NavLink to="/assessments/monthly">Monthly</NavLink>
