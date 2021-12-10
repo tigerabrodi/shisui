@@ -1,12 +1,9 @@
-import { LoaderFunction, redirect } from "remix";
+import { LoaderFunction } from "remix";
 import { authenticator } from "~/auth/auth.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await authenticator.isAuthenticated(request, {
+  await authenticator.authenticate("google", request, {
     successRedirect: "/assessments/daily",
+    failureRedirect: "/login",
   });
-
-  if (!user) {
-    return redirect("/login");
-  }
 };

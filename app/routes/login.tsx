@@ -1,5 +1,22 @@
 import { Form } from "remix";
 import { JournalIcon } from "~/icons/Journal";
+import { ActionFunction, LoaderFunction } from "remix";
+import { authenticator } from "~/auth/auth.server";
+
+export const action: ActionFunction = async ({ request }) => {
+  await authenticator.authenticate("google", request, {
+    successRedirect: "/daily",
+    failureRedirect: "/login",
+  });
+};
+
+export const loader: LoaderFunction = async ({ request }) => {
+  await authenticator.isAuthenticated(request, {
+    successRedirect: "/assessments/daily",
+  });
+
+  return null;
+};
 
 export default function Login() {
   return (
