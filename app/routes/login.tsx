@@ -4,13 +4,15 @@ import { JournalIcon } from "~/icons/Journal";
 export default function Login() {
   return (
     <main className="h-full w-full flex flex-col items-center">
-      <h1 className="mt-20 font-serif text-black font-bold text-4xl">Shisui</h1>
-      <h2 className="text-black mt-2 text-base text-center">
+      <h1 className="mt-20 font-serif text-black font-bold text-4xl md:text-6xl md:mt-24">
+        Shisui
+      </h1>
+      <h2 className="text-black mt-2 text-base text-center md:text-2xl md:mt-6">
         Strive to be better than your past.
       </h2>
-      <JournalIcon className="mt-6 w-20 h-20" />
-      <Form className="mt-20" action="/login" method="post">
-        <button className="px-5 py-1 text-white bg-black shadow-sm shadow-black text-lg rounded-sm">
+      <JournalIcon className="mt-6 w-20 h-20 md:w-36 md:h-36 md:mt-14" />
+      <Form className="mt-20 md:mt-48" action="/login" method="post">
+        <button className="px-5 py-1 text-white bg-black shadow-sm shadow-black text-lg rounded-sm md:text-2xl md:py-2 md:px-8 hover:shadow-md hover:shadow-black active:scale-[0.98] active:shadow-sm transition-all">
           Login
         </button>
       </Form>
