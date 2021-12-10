@@ -23,7 +23,7 @@ const Link: React.FC<{ to: string }> = ({ to, children }) => (
   <RemixLink
     to={to}
     prefetch="intent"
-    className="bg-black text-white text-lg w-24 h-9 font-sans shadow-sm shadow-black flex items-center justify-center rounded-sm hover:shadow-md hover:shadow-black transition-all md:w-32 md:h-14 md:text-2xl"
+    className="bg-black text-white text-lg w-24 h-9 font-sans flex items-center justify-center rounded-sm shadow-hover transition-all md:w-32 md:h-14 md:text-2xl"
   >
     {children}
   </RemixLink>

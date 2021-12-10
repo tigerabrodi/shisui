@@ -4,6 +4,12 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;500;700&family=Merriweather:wght@400;700&display=swap");
 
+@layer utilities {
+  .shadow-hover {
+    @apply hover:shadow-md hover:shadow-black shadow-sm shadow-black;
+  }
+}
+
 @layer base {
   *,
   *::after,

@@ -29,7 +29,7 @@ export default function Login() {
       </h2>
       <JournalIcon className="mt-6 w-20 h-20 md:w-36 md:h-36 md:mt-14" />
       <Form className="mt-20 md:mt-48" action="/login" method="post">
-        <button className="px-5 py-1 text-white bg-black shadow-sm shadow-black text-lg rounded-sm md:text-2xl md:py-2 md:px-8 hover:shadow-md hover:shadow-black active:scale-[0.98] active:shadow-sm transition-all">
+        <button className="px-5 py-1 text-white bg-black text-lg rounded-sm md:text-2xl md:py-2 md:px-8 shadow-hover active:scale-[0.98] active:shadow-sm transition-all">
           Login
         </button>
       </Form>
