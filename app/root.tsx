@@ -2,12 +2,16 @@ import {
   Links,
   LinksFunction,
   LiveReload,
+  LoaderFunction,
   Meta,
   MetaFunction,
   Outlet,
   Scripts,
   useCatch,
+  useLoaderData,
 } from "remix";
+import { authenticator } from "./auth/auth.server";
+import { Navigation } from "./components/Navigation";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: "/tailwindcss" }];
@@ -29,9 +33,22 @@ export const meta: MetaFunction = () => {
   };
 };
 
+type LoaderData = {
+  isAuthenticated: boolean;
+};
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await authenticator.isAuthenticated(request);
+
+  return { isAuthenticated: Boolean(user) };
+};
+
 export default function App() {
+  const { isAuthenticated } = useLoaderData<LoaderData>();
+
   return (
     <Document>
+      {isAuthenticated && <Navigation />}
       <Outlet />
     </Document>
   );
