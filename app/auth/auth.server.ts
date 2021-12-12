@@ -2,15 +2,15 @@
 import { Authenticator, GoogleProfile, GoogleStrategy } from "remix-auth";
 import { sessionStorage } from "./session.server";
 
-type User = {
+export type SessionUser = {
   userId: string;
 };
 
-export async function login(profile: GoogleProfile): Promise<User> {
+export async function login(profile: GoogleProfile): Promise<SessionUser> {
   return { userId: profile.id };
 }
 
-export const authenticator = new Authenticator<User>(sessionStorage);
+export const authenticator = new Authenticator<SessionUser>(sessionStorage);
 
 if (!process.env.GOOGLE_CLIENT_ID) {
   throw new Error("Missing GOOGLE_CLIENT_ID env");
