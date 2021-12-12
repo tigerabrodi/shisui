@@ -5,7 +5,7 @@ import { authenticator } from "~/auth/auth.server";
 
 export const action: ActionFunction = async ({ request }) => {
   await authenticator.authenticate("google", request, {
-    successRedirect: "/daily",
+    successRedirect: "/assessments/daily",
     failureRedirect: "/login",
   });
 };
