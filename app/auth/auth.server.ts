@@ -1,16 +1,14 @@
-// app/auth.server.ts
+import { User } from "@prisma/client";
 import { Authenticator, GoogleProfile, GoogleStrategy } from "remix-auth";
+import { findOrCreateUser } from "~/db/db-operations";
 import { sessionStorage } from "./session.server";
 
-export type SessionUser = {
-  userId: string;
-};
-
-export async function login(profile: GoogleProfile): Promise<SessionUser> {
-  return { userId: profile.id };
+export async function login(profile: GoogleProfile): Promise<User> {
+  const user = await findOrCreateUser(profile.id);
+  return user;
 }
 
-export const authenticator = new Authenticator<SessionUser>(sessionStorage);
+export const authenticator = new Authenticator<User>(sessionStorage);
 
 if (!process.env.GOOGLE_CLIENT_ID) {
   throw new Error("Missing GOOGLE_CLIENT_ID env");
