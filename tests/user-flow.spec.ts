@@ -1,80 +1,82 @@
-import env from "dotenv";
-import { test } from "@playwright/test";
+import env from 'dotenv'
+import { test } from '@playwright/test'
 import {
   getDocument,
   getQueriesForElement,
-} from "@playwright-testing-library/test";
-import { buildQuestionAnswer } from "./utils";
+} from '@playwright-testing-library/test'
+import { buildQuestionAnswer } from './utils'
 
-env.config();
+env.config()
 
-test("complete daily questions user flow.", async ({ page }) => {
-  const questionAnswers = buildQuestionAnswer();
+test('complete daily questions user flow.', async ({ page }) => {
+  const questionAnswers = buildQuestionAnswer()
 
-  await page.goto("/");
-  const document = await getDocument(page);
-  const { findByRole, findByLabelText, findAllByLabelText, findByText } =
-    getQueriesForElement(document);
+  await page.goto('/')
+  const document = await getDocument(page)
+  const { findByRole, findByLabelText, findByText } =
+    getQueriesForElement(document)
 
   // Landing page
-  await (await findByRole("heading", { name: "Shisui" })).isVisible();
-  await (await findByRole("button", { name: "Login" })).click();
+  await (await findByRole('heading', { name: 'Shisui' })).isVisible()
+  await (await findByRole('button', { name: 'Login' })).click()
 
   // Login
-  await page.waitForNavigation();
-  await (await page.waitForSelector("input")).type("tigerabrodi@gmail.com");
+  await page.waitForNavigation()
+  await (await page.waitForSelector('input')).type('tigerabrodi@gmail.com')
 
-  await (await page.waitForSelector("button span")).click();
-  await page.waitForNavigation();
+  await (await page.waitForSelector('button span')).click()
+  await page.waitForNavigation()
 
   await (
     await page.waitForSelector("input[type='password']")
-  ).type(process.env.GOOGLE_PASSWORD!);
-  await (await page.waitForSelector("button span")).click();
+  ).type(process.env.GOOGLE_PASSWORD!)
+  await (await page.waitForSelector('button span')).click()
 
-  await page.waitForNavigation();
-  await (await findByText("Successfully logged in.")).isVisible();
+  await page.waitForNavigation()
+  await (await findByText('Successfully logged in.')).isVisible()
 
   // Be on assessment page
-  await (await findByRole("heading", { name: "Assessments" })).isVisible();
+  await (await findByRole('heading', { name: 'Assessments' })).isVisible()
 
   // Go to questions page
-  await (await findByRole("link", { name: "Questions" })).click();
-  await page.waitForNavigation();
+  await (await findByRole('link', { name: 'Questions' })).click()
+  await page.waitForNavigation()
 
   // Questions page
-  await (await findByRole("heading", { name: "Questions" })).isVisible();
+  await (await findByRole('heading', { name: 'Questions' })).isVisible()
   await (
-    await findByRole("heading", {
-      name: "Questions for your daily assessments.",
+    await findByRole('heading', {
+      name: 'Questions for your daily assessments.',
     })
-  ).isVisible();
+  ).isVisible()
   await (
-    await findByRole("button", { name: "Back to daily assessments" })
-  ).isVisible();
+    await findByRole('button', { name: 'Back to daily assessments' })
+  ).isVisible()
 
   // First question
-  await (await findByLabelText("Question")).type(questionAnswers.firstQuestion);
+  await (
+    await findByLabelText('1st question')
+  ).type(questionAnswers.firstQuestion)
 
   // Second question
-  await (await findByRole("button", { name: "Add question" })).click();
+  await (await findByRole('button', { name: 'Add question' })).click()
   await (
-    await findAllByLabelText("Question")
-  )[1].type(questionAnswers.firstQuestion);
+    await findByLabelText('2nd question')
+  ).type(questionAnswers.firstQuestion)
 
   // Save questions
-  await (await findByRole("button", { name: "Save" })).click();
-  await page.waitForNavigation();
-  await (await findByText("Successfully saved your questions.")).isVisible();
+  await (await findByRole('button', { name: 'Save' })).click()
+  await page.waitForNavigation()
+  await (await findByText('Successfully saved your questions.')).isVisible()
 
   // New assessment page
   await (
-    await findByRole("button", { name: "Back to daily assessments" })
-  ).isVisible();
-  await (await findByRole("heading", { name: "Assessment" })).isVisible();
+    await findByRole('button', { name: 'Back to daily assessments' })
+  ).isVisible()
+  await (await findByRole('heading', { name: 'Assessment' })).isVisible()
   await (
-    await findByRole("heading", { name: "Assessment for today." })
-  ).isVisible();
+    await findByRole('heading', { name: 'Assessment for today.' })
+  ).isVisible()
 
   // Write a new assessment with the two given questions
-});
+})

@@ -9,57 +9,57 @@ import {
   Scripts,
   useCatch,
   useLoaderData,
-} from "remix";
-import { authenticator } from "./auth/auth.server";
-import { Navigation } from "./components/Navigation";
+} from 'remix'
+import { authenticator } from './auth/auth.server'
+import { Navigation } from './components/Navigation'
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: "/tailwindcss" }];
-};
+  return [{ rel: 'stylesheet', href: '/tailwindcss' }]
+}
 
 export const meta: MetaFunction = () => {
   let description =
-    "Become better than your past by assessing yourself regularly and holding yourself accountable!";
+    'Become better than your past by assessing yourself regularly and holding yourself accountable!'
   return {
     description,
     keywords:
-      "Shisui,self-improvement,discipline,productivity,remix,assessment",
+      'Shisui,self-improvement,discipline,productivity,remix,assessment',
     /*     "twitter:image": "https://remix-jokes.lol/social.png", */
-    "twitter:card": "summary_large_image",
-    "twitter:creator": "@TAbrodi",
-    "twitter:site": "@TAbrodi",
-    "twitter:title": "Shisui",
-    "twitter:description": description,
-  };
-};
+    'twitter:card': 'summary_large_image',
+    'twitter:creator': '@TAbrodi',
+    'twitter:site': '@TAbrodi',
+    'twitter:title': 'Shisui',
+    'twitter:description': description,
+  }
+}
 
 type LoaderData = {
-  isAuthenticated: boolean;
-};
+  isAuthenticated: boolean
+}
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await authenticator.isAuthenticated(request);
+  const user = await authenticator.isAuthenticated(request)
 
-  return { isAuthenticated: Boolean(user) };
-};
+  return { isAuthenticated: Boolean(user) }
+}
 
 export default function App() {
-  const { isAuthenticated } = useLoaderData<LoaderData>();
+  const { isAuthenticated } = useLoaderData<LoaderData>()
 
   return (
     <Document>
       {isAuthenticated && <Navigation />}
       <Outlet />
     </Document>
-  );
+  )
 }
 
 function Document({
   children,
-  title = "Shisui",
+  title = 'Shisui',
 }: {
-  children: React.ReactNode;
-  title?: string;
+  children: React.ReactNode
+  title?: string
 }) {
   return (
     <html lang="en">
@@ -73,14 +73,14 @@ function Document({
       <body>
         {children}
         <Scripts />
-        {process.env.NODE_ENV === "development" && <LiveReload />}
+        {process.env.NODE_ENV === 'development' && <LiveReload />}
       </body>
     </html>
-  );
+  )
 }
 
 export function ErrorBoundary({ error }: { error: Error }) {
-  console.error(error);
+  console.error(error)
   return (
     <Document title="Error!">
       <div>
@@ -93,13 +93,13 @@ export function ErrorBoundary({ error }: { error: Error }) {
         </p>
       </div>
     </Document>
-  );
+  )
 }
 
 export function CatchBoundary() {
-  let caught = useCatch();
+  let caught = useCatch()
 
-  let message;
+  let message
   switch (caught.status) {
     case 401:
       message = (
@@ -107,16 +107,16 @@ export function CatchBoundary() {
           Oops! Looks like you tried to visit a page that you do not have access
           to.
         </p>
-      );
-      break;
+      )
+      break
     case 404:
       message = (
         <p>Oops! Looks like you tried to visit a page that does not exist.</p>
-      );
-      break;
+      )
+      break
 
     default:
-      throw new Error(caught.data || caught.statusText);
+      throw new Error(caught.data || caught.statusText)
   }
 
   return (
@@ -126,5 +126,5 @@ export function CatchBoundary() {
       </h1>
       {message}
     </Document>
-  );
+  )
 }
