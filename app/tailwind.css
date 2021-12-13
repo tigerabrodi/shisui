@@ -8,6 +8,18 @@
   .shadow-hover {
     @apply hover:shadow-md hover:shadow-black shadow-sm shadow-black;
   }
+
+  .button-active {
+    @apply active:scale-[0.98] active:shadow-sm;
+  }
+
+  .flex-col-center {
+    @apply flex flex-col items-center;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
 }
 
 @layer base {
@@ -70,6 +82,7 @@
 
   input:focus {
     outline: none;
+    @apply shadow-sm shadow-black;
   }
 
   textarea {
@@ -83,5 +96,6 @@
 
   textarea:focus {
     outline: none;
+    @apply shadow-sm shadow-black;
   }
 }

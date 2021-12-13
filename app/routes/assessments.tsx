@@ -34,7 +34,7 @@ export default function Assessments() {
   const typeOfAssessment = location.pathname.split("/")[2];
 
   return (
-    <main className="h-full w-full flex flex-col items-center pb-6 md:pb-28">
+    <main className="h-full w-full flex-col-center pb-6 md:pb-28">
       <h1 className="font-bold text-3xl text-black mt-2 md:text-6xl md:mt-2">
         Assessments
       </h1>
