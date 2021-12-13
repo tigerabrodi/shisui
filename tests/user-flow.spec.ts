@@ -54,7 +54,6 @@ test("complete daily questions user flow.", async ({ page }) => {
   ).isVisible();
 
   // First question
-  await (await findByRole("button", { name: "Add question" })).click();
   await (await findByLabelText("Question")).type(questionAnswers.firstQuestion);
 
   // Second question
