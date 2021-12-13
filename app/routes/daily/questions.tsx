@@ -21,7 +21,7 @@ export default function Questions() {
         </button>
       </div>
       <div className="w-full flex items-center justify-end mt-5 md:mt-8">
-        <button aria-label="Add Question" className="question-button">
+        <button aria-label="Add question" className="question-button">
           <Add className="question-icon" />
         </button>
       </div>
