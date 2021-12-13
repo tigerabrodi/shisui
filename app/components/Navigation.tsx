@@ -16,7 +16,7 @@ const NavLink: React.FC<{ to: string }> = ({ to, children }) => (
 
 export const Navigation = () => {
   return (
-    <nav className="h-16 w-full flex justify-between items-center px-5 md:h-24 md:px-24 md:w-4/5 lg:w-3/5 xl:w-2/5">
+    <nav className="min-h-[64px] w-full flex justify-between items-center px-5 md:min-h-[96px] md:px-24 md:w-4/5 lg:w-3/5 xl:w-2/5">
       <NavLink to="/assessments/daily">Daily</NavLink>
       <NavLink to="/assessments/weekly">Weekly</NavLink>
       <NavLink to="/assessments/monthly">Monthly</NavLink>
