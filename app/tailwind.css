@@ -24,6 +24,22 @@
   .heading-one {
     @apply font-bold text-3xl text-black md:text-6xl;
   }
+
+  .heading-two {
+    @apply font-normal text-sm text-black text-center mt-3 md:text-2xl md:mt-6;
+  }
+
+  .bottom-button-link {
+    @apply shadow-hover transition-all w-[85px] h-9 bg-black text-white flex-center font-medium text-lg md:w-32 md:text-3xl md:h-14;
+  }
+
+  .question-button {
+    @apply w-[38px] h-7 bg-black flex-center shadow-hover transition-all md:w-2/12 md:h-11 button-active;
+  }
+
+  .question-icon {
+    @apply w-4 h-4 md:w-6 md:h-6;
+  }
 }
 
 @layer base {
