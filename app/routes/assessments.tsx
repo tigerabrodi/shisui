@@ -35,9 +35,7 @@ export default function Assessments() {
 
   return (
     <main className="h-full w-full flex-col-center pb-6 md:pb-28">
-      <h1 className="font-bold text-3xl text-black mt-2 md:text-6xl md:mt-2">
-        Assessments
-      </h1>
+      <h1 className="heading-one mt-2 md:mt-2">Assessments</h1>
       <Outlet />
       <div className="flex items-center mt-auto gap-10 md:gap-44">
         <Link to={`/${typeOfAssessment}/new`}>Write</Link>

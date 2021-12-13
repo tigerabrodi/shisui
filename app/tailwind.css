@@ -20,6 +20,10 @@
   .flex-center {
     @apply flex items-center justify-center;
   }
+
+  .heading-one {
+    @apply font-bold text-3xl text-black md:text-6xl;
+  }
 }
 
 @layer base {

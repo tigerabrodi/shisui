@@ -7,7 +7,7 @@ export default function Daily() {
 
   return (
     <main className="w-72 h-full flex-col-center relative md:w-3/5 lg:w-3/6 xl:w-4/12">
-      <h1 className="font-bold text-3xl text-black md:text-6xl">
+      <h1 className="heading-one">
         {isQuestionsPage ? "Questions" : "Assessment"}
       </h1>
       <Link
