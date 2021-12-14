@@ -97,7 +97,7 @@ export default function Questions() {
     }
 
     if (actionData?.isSuccess) {
-      toast.success('Questions have been successfully saved!')
+      toast.success('Questions have successfully been saved!')
       actionData.isSuccess = false
       navigate('/daily/new')
     }

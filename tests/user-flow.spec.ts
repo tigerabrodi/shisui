@@ -33,7 +33,6 @@ test('complete daily questions user flow.', async ({ page }) => {
   await (await page.waitForSelector('button span')).click()
 
   await page.waitForNavigation()
-  await (await findByText('Successfully logged in.')).isVisible()
 
   // Be on assessment page
   await (await findByRole('heading', { name: 'Assessments' })).isVisible()
@@ -67,7 +66,9 @@ test('complete daily questions user flow.', async ({ page }) => {
   // Save questions
   await (await findByRole('button', { name: 'Save' })).click()
   await page.waitForNavigation()
-  await (await findByText('Successfully saved your questions.')).isVisible()
+  await (
+    await findByText('Questions have successfully been saved!')
+  ).isVisible()
 
   // New assessment page
   await (
