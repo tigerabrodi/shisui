@@ -1,18 +1,19 @@
-import * as React from "react";
-import { NavLink as RemixNavLink } from "remix";
+import * as React from 'react'
+import { NavLink as RemixNavLink } from 'remix'
 
 const NavLink: React.FC<{ to: string }> = ({ to, children }) => (
   <RemixNavLink
     className={({ isActive }) =>
       isActive
-        ? "font-serif font-bold text-black text-lg underline md:text-2xl"
-        : "font-serif font-normal text-black text-lg md:text-2xl hover:underline"
+        ? 'font-serif font-bold text-black text-lg underline md:text-2xl'
+        : 'font-serif font-normal text-black text-lg md:text-2xl hover:underline'
     }
     to={to}
+    prefetch="intent"
   >
     {children}
   </RemixNavLink>
-);
+)
 
 export const Navigation = () => {
   return (
@@ -21,5 +22,5 @@ export const Navigation = () => {
       <NavLink to="/assessments/weekly">Weekly</NavLink>
       <NavLink to="/assessments/monthly">Monthly</NavLink>
     </nav>
-  );
-};
+  )
+}
