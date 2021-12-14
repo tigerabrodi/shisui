@@ -20,9 +20,10 @@ export const links: LinksFunction = () => {
 }
 
 export const meta: MetaFunction = () => {
-  let description =
+  const description =
     'Become better than your past by assessing yourself regularly and holding yourself accountable!'
   return {
+    title: 'Shisui',
     description,
     keywords:
       'Shisui,self-improvement,discipline,productivity,remix,assessment',

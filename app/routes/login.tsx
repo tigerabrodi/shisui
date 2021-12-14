@@ -1,22 +1,29 @@
-import { Form } from "remix";
-import { JournalIcon } from "~/icons/Journal";
-import { ActionFunction, LoaderFunction } from "remix";
-import { authenticator } from "~/auth/auth.server";
+import { Form, MetaFunction } from 'remix'
+import { JournalIcon } from '~/icons/Journal'
+import { ActionFunction, LoaderFunction } from 'remix'
+import { authenticator } from '~/auth/auth.server'
+
+export const meta: MetaFunction = () => {
+  return {
+    title: 'Login',
+    description: 'Login with your google account.',
+  }
+}
 
 export const action: ActionFunction = async ({ request }) => {
-  await authenticator.authenticate("google", request, {
-    successRedirect: "/assessments/daily",
-    failureRedirect: "/login",
-  });
-};
+  await authenticator.authenticate('google', request, {
+    successRedirect: '/assessments/daily',
+    failureRedirect: '/login',
+  })
+}
 
 export const loader: LoaderFunction = async ({ request }) => {
   await authenticator.isAuthenticated(request, {
-    successRedirect: "/assessments/daily",
-  });
+    successRedirect: '/assessments/daily',
+  })
 
-  return null;
-};
+  return null
+}
 
 export default function Login() {
   return (
@@ -34,5 +41,5 @@ export default function Login() {
         </button>
       </Form>
     </main>
-  );
+  )
 }

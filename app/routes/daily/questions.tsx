@@ -3,6 +3,7 @@ import {
   Form,
   Link,
   LoaderFunction,
+  MetaFunction,
   useActionData,
   useLoaderData,
   useNavigate,
@@ -20,6 +21,13 @@ import {
   findQuestions,
 } from '~/db/db-operations'
 import { transformToQuestion } from '~/lib/utils'
+
+export const meta: MetaFunction = () => {
+  return {
+    title: 'Questions',
+    description: 'Questions for the daily assessments.',
+  }
+}
 
 type ActionData = {
   isError?: boolean
