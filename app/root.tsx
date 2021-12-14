@@ -1,3 +1,4 @@
+import { Toaster } from 'react-hot-toast'
 import {
   Links,
   LinksFunction,
@@ -12,6 +13,7 @@ import {
 } from 'remix'
 import { authenticator } from './auth/auth.server'
 import { Navigation } from './components/Navigation'
+import { toastOptions } from './lib/toast'
 
 export const links: LinksFunction = () => {
   return [{ rel: 'stylesheet', href: '/tailwindcss' }]
@@ -48,6 +50,11 @@ export default function App() {
 
   return (
     <Document>
+      <Toaster
+        position="top-center"
+        toastOptions={toastOptions}
+        containerStyle={{ top: 50 }}
+      />
       {isAuthenticated && <Navigation />}
       <Outlet />
     </Document>
