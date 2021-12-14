@@ -7,8 +7,7 @@
     "build": "remix build",
     "dev": "node -r dotenv/config node_modules/.bin/remix dev",
     "postinstall": "remix setup node",
-    "start": "remix-serve build",
-    "test": "PWDEBUG=console playwright test"
+    "start": "remix-serve build"
   },
   "dependencies": {
     "@prisma/client": "^3.6.0",
@@ -27,13 +26,10 @@
   },
   "devDependencies": {
     "@jackfranklin/test-data-bot": "^1.4.0",
-    "@playwright-testing-library/test": "^4.0.1",
-    "@playwright/test": "^1.17.1",
     "@remix-run/dev": "^1.0.6",
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
     "@types/uuid": "^8.3.3",
-    "playwright-testing-library": "^4.0.1",
     "prisma": "^3.6.0",
     "typescript": "^4.1.2"
   },
