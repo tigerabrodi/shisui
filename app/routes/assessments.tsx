@@ -1,17 +1,17 @@
-import { Link, LoaderFunction, Outlet, redirect, useLocation } from "remix";
-import { authenticator } from "~/auth/auth.server";
+import { Link, LoaderFunction, Outlet, redirect, useLocation } from 'remix'
+import { authenticator } from '~/auth/auth.server'
 
 export const loader: LoaderFunction = async ({ request }) => {
   await authenticator.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
+    failureRedirect: '/login',
+  })
 
-  if (request.url.endsWith("/assessments")) {
-    return redirect("/assessments/daily");
+  if (request.url.endsWith('/assessments')) {
+    return redirect('/assessments/daily')
   }
 
-  return null;
-};
+  return null
+}
 
 const BottomLink: React.FC<{ to: string }> = ({ to, children }) => (
   <Link
@@ -21,11 +21,11 @@ const BottomLink: React.FC<{ to: string }> = ({ to, children }) => (
   >
     {children}
   </Link>
-);
+)
 
 export default function Assessments() {
-  const location = useLocation();
-  const typeOfAssessment = location.pathname.split("/")[2];
+  const location = useLocation()
+  const typeOfAssessment = location.pathname.split('/')[2]
 
   return (
     <main className="h-full w-full flex-col-center pb-6 md:pb-28">
@@ -36,5 +36,5 @@ export default function Assessments() {
         <BottomLink to={`/${typeOfAssessment}/questions`}>Questions</BottomLink>
       </div>
     </main>
-  );
+  )
 }
