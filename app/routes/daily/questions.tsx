@@ -12,9 +12,14 @@ import * as React from 'react'
 import { authenticator } from '~/auth/auth.server'
 import { Add } from '~/icons/Add'
 import { Question } from '@prisma/client'
-import { db } from '~/db/db.server'
 import { QuestionInput } from '~/components/QuestionInput'
 import toast from 'react-hot-toast'
+import {
+  createQuestions,
+  deleteQuestions,
+  findQuestions,
+} from '~/db/db-operations'
+import { transformToQuestion } from '~/lib/utils'
 
 type ActionData = {
   isError?: boolean
@@ -29,31 +34,24 @@ export const action: ActionFunction = async ({
   })
 
   const form = await request.formData()
-  const allQuestions = form.getAll('question')
-  const isAnyQuestionsEmpty = allQuestions.some((question) => !question)
+  const allQuestionTitles = form.getAll('question')
+  const isAnyQuestionsEmpty = allQuestionTitles.some((title) => !title)
 
   if (isAnyQuestionsEmpty) {
     return { isError: true }
   }
 
-  await db.question.deleteMany({
-    where: {
-      userId: user.id,
-      type: 'DAILY',
-    },
-  })
+  await deleteQuestions(user.id, 'DAILY')
 
-  const createdQuestions = allQuestions.map((question) => {
-    return {
-      title: question,
+  const questions = allQuestionTitles.map((title) =>
+    transformToQuestion({
+      title: title as string,
       type: 'DAILY',
       userId: user.id,
-    }
-  }) as Question[]
+    })
+  )
 
-  await db.question.createMany({
-    data: createdQuestions,
-  })
+  await createQuestions(questions)
 
   return { isSuccess: true }
 }
@@ -63,12 +61,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     failureRedirect: '/login',
   })
 
-  const dbQuestions = await db.question.findMany({
-    where: {
-      userId: user.id,
-      type: 'DAILY',
-    },
-  })
+  const dbQuestions = await findQuestions(user.id, 'DAILY')
 
   const questions = dbQuestions.length ? dbQuestions : [{ id: v4(), title: '' }]
 
