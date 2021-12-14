@@ -5,6 +5,7 @@ import {
   LoaderFunction,
   useActionData,
   useLoaderData,
+  useNavigate,
 } from 'remix'
 import { v4 } from 'uuid'
 import * as React from 'react'
@@ -17,11 +18,12 @@ import toast from 'react-hot-toast'
 
 type ActionData = {
   isError?: boolean
+  isSuccess?: boolean
 }
 
 export const action: ActionFunction = async ({
   request,
-}): Promise<Response | ActionData | undefined> => {
+}): Promise<ActionData> => {
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: '/login',
   })
@@ -34,12 +36,26 @@ export const action: ActionFunction = async ({
     return { isError: true }
   }
 
-  /*   await db.question.deleteMany({
+  await db.question.deleteMany({
     where: {
       userId: user.id,
       type: 'DAILY',
     },
-  }) */
+  })
+
+  const createdQuestions = allQuestions.map((question) => {
+    return {
+      title: question,
+      type: 'DAILY',
+      userId: user.id,
+    }
+  }) as Question[]
+
+  await db.question.createMany({
+    data: createdQuestions,
+  })
+
+  return { isSuccess: true }
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -62,6 +78,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Questions() {
   const actionData = useActionData<ActionData>()
   const loaderQuestions = useLoaderData<Question[]>()
+  const navigate = useNavigate()
   const [questions, setQuestions] = React.useState<Question[]>(loaderQuestions)
 
   const deleteQuestion = (questionId: number) => {
@@ -77,7 +94,13 @@ export default function Questions() {
       toast.error('Please fill in all the questions you added.')
       actionData.isError = false
     }
-  }, [actionData?.isError])
+
+    if (actionData?.isSuccess) {
+      toast.success('Questions have been successfully saved!')
+      actionData.isSuccess = false
+      navigate('/daily/new')
+    }
+  }, [actionData?.isError, actionData?.isSuccess])
 
   return (
     <>
