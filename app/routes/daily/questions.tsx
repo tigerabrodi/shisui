@@ -106,7 +106,7 @@ export default function Questions() {
           </button>
         </div>
 
-        <div className="mt-auto w-60 flex items-center justify-between pb-10 pt-8 md:w-5/6 md:pb-32">
+        <div className="mt-auto w-60 flex items-center justify-between pb-10 pt-8 md:w-5/6 md:pb-32 md:pt-16">
           <Link to="/assessments/daily" className="bottom-button-link">
             Cancel
           </Link>
