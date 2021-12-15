@@ -38,12 +38,12 @@ export const action: ActionFunction = async ({ request }) => {
     data: {
       userId: user.id,
       questionsAnswers: {
-        create: [...questionsAnswers],
+        create: questionsAnswers,
       },
     },
   })
 
-  return redirect(`/daily/${assessment.id}`, { status: 201 })
+  return redirect(`/daily/${assessment.id}`)
 }
 
 type LoaderData = {
@@ -73,20 +73,20 @@ export default function New() {
         action="/daily/new"
         method="post"
       >
-        {questions.map((question) => (
+        {questions.map(({ title, id }) => (
           <div
-            key={question.id}
+            key={id}
             className="w-full min-h-[128px] mt-6 flex flex-col justify-between items-start md:min-h-[190px] md:mt-12"
           >
             <label
-              htmlFor={String(question.id)}
+              htmlFor={String(id)}
               className="font-bold font-serif text-lg text-black md:text-2xl"
             >
-              {question.title}
+              {title}
             </label>
             <textarea
-              name="question"
-              id={String(question.id)}
+              name={title}
+              id={String(id)}
               className="w-full bg-black h-20 text-white rounded-sm pl-2 pt-2 font-sans font-normal text-sm md:text-lg md:h-32"
               placeholder="Today I..."
             />
