@@ -9,6 +9,7 @@ type LoaderData = {
     createdAt: Date
     userId: string
   }
+  createdAt: string
 }
 
 export const loader: LoaderFunction = async ({
@@ -42,15 +43,22 @@ export const loader: LoaderFunction = async ({
     })
   }
 
-  return { assessment }
+  const createdAt = assessment.createdAt.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
+
+  return { assessment, createdAt }
 }
 
 export default function Assessment() {
-  const { assessment } = useLoaderData<LoaderData>()
+  const { assessment, createdAt } = useLoaderData<LoaderData>()
 
   return (
     <>
-      <h2 className="heading-two">Assessment for today.</h2>
+      <h2 className="heading-two">Written on {createdAt}</h2>
       {assessment.questionsAnswers.map(({ id, question, answer }) => (
         <article
           key={id}
