@@ -1,13 +1,49 @@
 import { Question } from '@prisma/client'
-import { Form, Link, LoaderFunction, MetaFunction, useLoaderData } from 'remix'
+import {
+  ActionFunction,
+  Form,
+  Link,
+  LoaderFunction,
+  MetaFunction,
+  redirect,
+  useLoaderData,
+} from 'remix'
 import { authenticator } from '~/auth/auth.server'
 import { findQuestions } from '~/db/db-operations'
+import { db } from '~/db/db.server'
 
 export const meta: MetaFunction = () => {
   return {
     title: 'Daily Assessment',
     description: 'Assessment for today.',
   }
+}
+
+export const action: ActionFunction = async ({ request }) => {
+  const user = await authenticator.isAuthenticated(request, {
+    failureRedirect: '/login',
+  })
+
+  const form = await request.formData()
+  const questions = await findQuestions(user.id, 'DAILY')
+
+  const questionsAnswers = questions.map((question) => {
+    return {
+      question: question.title,
+      answer: form.get(question.title) as string,
+    }
+  })
+
+  const assessment = await db.assessment.create({
+    data: {
+      userId: user.id,
+      questionsAnswers: {
+        create: [...questionsAnswers],
+      },
+    },
+  })
+
+  return redirect(`/daily/${assessment.id}`, { status: 201 })
 }
 
 type LoaderData = {
@@ -32,7 +68,11 @@ export default function New() {
   return (
     <>
       <h2 className="heading-two">Assessment for today.</h2>
-      <Form className="w-full h-full flex-col-center">
+      <Form
+        className="w-full h-full flex-col-center"
+        action="/daily/new"
+        method="post"
+      >
         {questions.map((question) => (
           <div
             key={question.id}
