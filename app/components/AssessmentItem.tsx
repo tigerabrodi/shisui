@@ -14,7 +14,7 @@ export const AssessmentItem: React.FC<{ assessment: Assessment }> = ({
         Written on {assessment.createdAt}
       </Link>
       <span className="absolute top-[3px] right-[3px] bg-white px-1 text-black rounded-sm font-normal text-[10px] md:text-base md:top-1 md:right-1">
-        2021
+        {assessment.createdAt.split(',')[2].trim()}
       </span>
     </li>
   )
