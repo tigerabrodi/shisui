@@ -18,7 +18,7 @@ model User {
 
 model Question {
   id     Int    @default(autoincrement()) @id
-  title String
+  title  String
   user   User @relation(fields: [userId], references: [id])
   userId String
   type   QuestionType
@@ -31,9 +31,17 @@ enum QuestionType {
 }
 
 model Assessment {
-  id Int @default(autoincrement()) @id
-  question String
-  answer String
-  user   User @relation(fields: [userId], references: [id])
-  userId String
+  id               String   @id @default(uuid())
+  createdAt        DateTime   @default(now())
+  user             User @relation(fields: [userId], references: [id])
+  userId           String
+  questionsAnswers QuestionAnswer[]
+}
+
+model QuestionAnswer {
+  id           String   @id @default(uuid())
+  question     String
+  answer       String
+  assessment   Assessment @relation(fields: [assessmentId], references: [id])
+  assessmentId String
 }
