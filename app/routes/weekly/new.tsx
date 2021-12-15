@@ -37,6 +37,7 @@ export const action: ActionFunction = async ({ request }) => {
   const assessment = await db.assessment.create({
     data: {
       userId: user.id,
+      type: 'WEEKLY',
       questionsAnswers: {
         create: questionsAnswers,
       },
