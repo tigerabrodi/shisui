@@ -2,6 +2,7 @@ import { LoaderFunction, useCatch, useLoaderData } from 'remix'
 import { authenticator } from '~/auth/auth.server'
 import { db } from '~/db/db.server'
 import { Assessment } from '~/lib/types'
+import { convertToDate } from '~/lib/utils'
 
 type LoaderData = {
   assessment: Assessment
@@ -40,12 +41,7 @@ export const loader: LoaderFunction = async ({
 
   const assessment = {
     ...dbAssessment,
-    createdAt: dbAssessment.createdAt.toLocaleDateString('en-US', {
-      weekday: 'long',
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    }),
+    createdAt: convertToDate(dbAssessment.createdAt),
   } as unknown as Assessment
 
   return { assessment }

@@ -3,6 +3,7 @@ import { authenticator } from '~/auth/auth.server'
 import { AssessmentFeed } from '~/components/AssessmentFeed'
 import { db } from '~/db/db.server'
 import { Assessment } from '~/lib/types'
+import { convertToDate } from '~/lib/utils'
 
 export const meta: MetaFunction = () => {
   return {
@@ -40,12 +41,7 @@ export const loader: LoaderFunction = async ({
 
   const assessments = dbAssessments.map((assessment) => ({
     ...assessment,
-    createdAt: assessment.createdAt.toLocaleDateString('en-US', {
-      weekday: 'long',
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    }),
+    createdAt: convertToDate(assessment.createdAt),
   }))
 
   return { assessments }

@@ -2,6 +2,7 @@ import { Assessment, QuestionAnswer } from '@prisma/client'
 import { LoaderFunction, useCatch, useLoaderData } from 'remix'
 import { authenticator } from '~/auth/auth.server'
 import { db } from '~/db/db.server'
+import { convertToDate } from '~/lib/utils'
 
 type LoaderData = {
   assessment: {
@@ -43,12 +44,7 @@ export const loader: LoaderFunction = async ({
     })
   }
 
-  const createdAt = assessment.createdAt.toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  })
+  const createdAt = convertToDate(assessment.createdAt)
 
   return { assessment, createdAt }
 }

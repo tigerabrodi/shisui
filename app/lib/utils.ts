@@ -32,3 +32,11 @@ export const transformToQuestion = ({
     type,
     userId,
   } as Question)
+
+export const convertToDate = (date: Date) =>
+  date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
