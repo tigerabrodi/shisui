@@ -1,15 +1,10 @@
-import { Assessment, QuestionAnswer } from '@prisma/client'
 import { LoaderFunction, useCatch, useLoaderData } from 'remix'
 import { authenticator } from '~/auth/auth.server'
 import { db } from '~/db/db.server'
+import { Assessment } from '~/lib/types'
 
 type LoaderData = {
-  assessment: {
-    questionsAnswers: QuestionAnswer[]
-    createdAt: Date
-    userId: string
-  }
-  createdAt: string
+  assessment: Assessment
 }
 
 export const loader: LoaderFunction = async ({
@@ -20,7 +15,7 @@ export const loader: LoaderFunction = async ({
     failureRedirect: '/login',
   })
 
-  const assessment = await db.assessment.findUnique({
+  const dbAssessment = await db.assessment.findUnique({
     where: {
       id: params.assessmentId,
     },
@@ -31,35 +26,40 @@ export const loader: LoaderFunction = async ({
     },
   })
 
-  if (!assessment) {
+  if (!dbAssessment) {
     throw new Response('Not Found', {
       status: 404,
     })
   }
 
-  if (user.id !== assessment.userId) {
+  if (user.id !== dbAssessment.userId) {
     throw new Response('Forbidden', {
       status: 403,
     })
   }
 
-  const createdAt = assessment.createdAt.toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  })
+  const assessment = {
+    ...dbAssessment,
+    createdAt: dbAssessment.createdAt.toLocaleDateString('en-US', {
+      weekday: 'long',
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    }),
+  } as unknown as Assessment
 
-  return { assessment, createdAt }
+  return { assessment }
 }
 
 export default function Assessment() {
-  const { assessment, createdAt } = useLoaderData<LoaderData>()
+  const {
+    assessment: { questionsAnswers, createdAt },
+  } = useLoaderData<LoaderData>()
 
   return (
     <>
       <h2 className="heading-two">Written on {createdAt}</h2>
-      {assessment.questionsAnswers.map(({ id, question, answer }) => (
+      {questionsAnswers.map(({ id, question, answer }) => (
         <article
           key={id}
           className="w-full min-h-[60px] mt-6 flex flex-col justify-between items-start md:min-h-[80px] md:mt-12"
