@@ -52,3 +52,20 @@ export const findQuestions = async (userId: string, type: QuestionType) =>
       type,
     },
   })
+
+export const findManyAssessments = async (userId: string, type: QuestionType) =>
+  await db.assessment.findMany({
+    where: {
+      AND: [
+        {
+          type,
+        },
+        {
+          userId,
+        },
+      ],
+    },
+    include: {
+      questionsAnswers: true,
+    },
+  })

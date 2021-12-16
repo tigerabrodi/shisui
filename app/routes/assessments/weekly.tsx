@@ -1,7 +1,7 @@
 import { LoaderFunction, MetaFunction, useLoaderData } from 'remix'
 import { authenticator } from '~/auth/auth.server'
 import { AssessmentFeed } from '~/components/AssessmentFeed'
-import { db } from '~/db/db.server'
+import { findManyAssessments } from '~/db/db-operations'
 import { Assessment } from '~/lib/types'
 import { convertToDate } from '~/lib/utils'
 
@@ -23,21 +23,7 @@ export const loader: LoaderFunction = async ({
     failureRedirect: '/login',
   })
 
-  const dbAssessments = await db.assessment.findMany({
-    where: {
-      AND: [
-        {
-          type: 'WEEKLY',
-        },
-        {
-          userId: user.id,
-        },
-      ],
-    },
-    include: {
-      questionsAnswers: true,
-    },
-  })
+  const dbAssessments = await findManyAssessments(user.id, 'WEEKLY')
 
   const assessments = dbAssessments.map((assessment) => ({
     ...assessment,
