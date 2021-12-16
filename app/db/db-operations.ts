@@ -69,3 +69,15 @@ export const findManyAssessments = async (userId: string, type: QuestionType) =>
       questionsAnswers: true,
     },
   })
+
+export const findUniqueAssessment = async (id: string) =>
+  await db.assessment.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      questionsAnswers: true,
+      createdAt: true,
+      userId: true,
+    },
+  })

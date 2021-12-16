@@ -1,16 +1,11 @@
-import { Assessment, QuestionAnswer } from '@prisma/client'
 import { LoaderFunction, useCatch, useLoaderData } from 'remix'
 import { authenticator } from '~/auth/auth.server'
-import { db } from '~/db/db.server'
+import { findUniqueAssessment } from '~/db/db-operations'
+import { Assessment } from '~/lib/types'
 import { convertToDate } from '~/lib/utils'
 
 type LoaderData = {
-  assessment: {
-    questionsAnswers: QuestionAnswer[]
-    createdAt: Date
-    userId: string
-  }
-  createdAt: string
+  assessment: Assessment
 }
 
 export const loader: LoaderFunction = async ({
@@ -21,41 +16,37 @@ export const loader: LoaderFunction = async ({
     failureRedirect: '/login',
   })
 
-  const assessment = await db.assessment.findUnique({
-    where: {
-      id: params.assessmentId,
-    },
-    select: {
-      questionsAnswers: true,
-      createdAt: true,
-      userId: true,
-    },
-  })
+  const dbAssessment = await findUniqueAssessment(params.assessmentId as string)
 
-  if (!assessment) {
+  if (!dbAssessment) {
     throw new Response('Not Found', {
       status: 404,
     })
   }
 
-  if (user.id !== assessment.userId) {
+  if (user.id !== dbAssessment.userId) {
     throw new Response('Forbidden', {
       status: 403,
     })
   }
 
-  const createdAt = convertToDate(assessment.createdAt)
+  const assessment = {
+    ...dbAssessment,
+    createdAt: convertToDate(dbAssessment.createdAt),
+  } as unknown as Assessment
 
-  return { assessment, createdAt }
+  return { assessment }
 }
 
 export default function Assessment() {
-  const { assessment, createdAt } = useLoaderData<LoaderData>()
+  const {
+    assessment: { questionsAnswers, createdAt },
+  } = useLoaderData<LoaderData>()
 
   return (
     <>
       <h2 className="heading-two">Written on {createdAt}</h2>
-      {assessment.questionsAnswers.map(({ id, question, answer }) => (
+      {questionsAnswers.map(({ id, question, answer }) => (
         <article
           key={id}
           className="w-full min-h-[60px] mt-6 flex flex-col justify-between items-start md:min-h-[80px] md:mt-12"

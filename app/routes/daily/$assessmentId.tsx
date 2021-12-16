@@ -1,6 +1,6 @@
 import { LoaderFunction, useCatch, useLoaderData } from 'remix'
 import { authenticator } from '~/auth/auth.server'
-import { db } from '~/db/db.server'
+import { findUniqueAssessment } from '~/db/db-operations'
 import { Assessment } from '~/lib/types'
 import { convertToDate } from '~/lib/utils'
 
@@ -16,16 +16,7 @@ export const loader: LoaderFunction = async ({
     failureRedirect: '/login',
   })
 
-  const dbAssessment = await db.assessment.findUnique({
-    where: {
-      id: params.assessmentId,
-    },
-    select: {
-      questionsAnswers: true,
-      createdAt: true,
-      userId: true,
-    },
-  })
+  const dbAssessment = await findUniqueAssessment(params.assessmentId as string)
 
   if (!dbAssessment) {
     throw new Response('Not Found', {
