@@ -14,6 +14,7 @@ import {
 import { authenticator } from './auth/auth.server'
 import { Navigation } from './components/Navigation'
 import { toastOptions } from './lib/toast'
+import openBookImg from './assets/open-book.png'
 
 export const links: LinksFunction = () => {
   return [{ rel: 'stylesheet', href: '/tailwindcss' }]
@@ -27,12 +28,15 @@ export const meta: MetaFunction = () => {
     description,
     keywords:
       'Shisui,self-improvement,discipline,productivity,remix,assessment',
-    /*     "twitter:image": "https://remix-jokes.lol/social.png", */
-    'twitter:card': 'summary_large_image',
+    'twitter:image': openBookImg,
+    'twitter:card': 'summary',
     'twitter:creator': '@TAbrodi',
     'twitter:site': '@TAbrodi',
     'twitter:title': 'Shisui',
     'twitter:description': description,
+    'og:image': openBookImg,
+    'og:title': 'Shisui',
+    'og:description': description,
   }
 }
 
