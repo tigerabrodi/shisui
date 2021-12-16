@@ -40,3 +40,8 @@ export const convertToDate = (date: Date) =>
     day: 'numeric',
     year: 'numeric',
   })
+
+export const toQuestionAnswer = (question: Question, form: FormData) => ({
+  question: question.title,
+  answer: form.get(question.title) as string,
+})

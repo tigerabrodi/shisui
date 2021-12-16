@@ -11,6 +11,7 @@ import {
 import { authenticator } from '~/auth/auth.server'
 import { findQuestions } from '~/db/db-operations'
 import { db } from '~/db/db.server'
+import { toQuestionAnswer } from '~/lib/utils'
 
 export const meta: MetaFunction = () => {
   return {
@@ -27,12 +28,9 @@ export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData()
   const questions = await findQuestions(user.id, 'MONTHLY')
 
-  const questionsAnswers = questions.map((question) => {
-    return {
-      question: question.title,
-      answer: form.get(question.title) as string,
-    }
-  })
+  const questionsAnswers = questions.map((question) =>
+    toQuestionAnswer(question, form)
+  )
 
   const assessment = await db.assessment.create({
     data: {
