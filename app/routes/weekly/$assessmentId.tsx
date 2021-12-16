@@ -1,8 +1,25 @@
-import { LoaderFunction, useCatch, useLoaderData } from 'remix'
+import { LoaderFunction, MetaFunction, useCatch, useLoaderData } from 'remix'
 import { authenticator } from '~/auth/auth.server'
 import { findUniqueAssessment } from '~/db/db-operations'
 import { Assessment } from '~/lib/types'
 import { convertToDate } from '~/lib/utils'
+
+export const meta: MetaFunction = ({
+  data,
+}: {
+  data: LoaderData | undefined
+}) => {
+  if (!data) {
+    return {
+      title: 'No assessment',
+      description: 'No assessment found',
+    }
+  }
+  return {
+    title: 'Weekly Assessment',
+    description: `Assessment in ${data.assessment.createdAt}`,
+  }
+}
 
 type LoaderData = {
   assessment: Assessment
