@@ -7,9 +7,7 @@
     "build": "remix build",
     "dev": "node -r dotenv/config node_modules/.bin/remix dev",
     "postinstall": "remix setup node",
-    "start": "remix-serve build",
-    "cy:run": "cypress run",
-    "cy:open": "cypress open"
+    "start": "remix-serve build"
   },
   "dependencies": {
     "@prisma/client": "^3.6.0",
@@ -27,9 +25,8 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@jackfranklin/test-data-bot": "^1.4.0",
     "@remix-run/dev": "^1.0.6",
-    "@testing-library/cypress": "^8.0.2",
+    "@types/node": "^17.0.0",
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
     "@types/uuid": "^8.3.3",
