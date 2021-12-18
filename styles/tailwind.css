@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;500;700&family=Merriweather:wght@400;700&display=swap');
+
+@layer utilities {
+  .shadow-hover {
+    @apply hover:shadow-md hover:shadow-black shadow-sm shadow-black;
+  }
+
+  .button-active {
+    @apply active:scale-[0.98] active:shadow-sm;
+  }
+
+  .flex-col-center {
+    @apply flex flex-col items-center;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .heading-one {
+    @apply font-bold text-3xl text-black md:text-6xl;
+  }
+
+  .heading-two {
+    @apply font-normal text-sm text-black text-center mt-3 md:text-2xl md:mt-6;
+  }
+
+  .bottom-button-link {
+    @apply shadow-hover transition-all w-[85px] h-9 bg-black text-white flex-center font-medium text-lg md:w-32 md:text-3xl md:h-14;
+  }
+
+  .question-button {
+    @apply w-[38px] h-7 bg-black flex-center shadow-hover transition-all md:w-2/12 md:h-11 button-active;
+  }
+
+  .question-icon {
+    @apply w-4 h-4 md:w-6 md:h-6;
+  }
+}
+
+@layer base {
+  *,
+  *::after,
+  *::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+  }
+
+  html {
+    height: 100%;
+  }
+
+  body {
+    box-sizing: border-box;
+    background: #ebe1e1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  a:focus-visible {
+    outline: 1px solid white;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 5px black;
+  }
+
+  button {
+    border: none;
+    cursor: pointer;
+  }
+
+  button:focus-visible {
+    outline: 1px solid white;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 5px black;
+  }
+
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  input {
+    border: none;
+  }
+
+  input::placeholder {
+    color: inherit;
+    opacity: 0.6;
+  }
+
+  input:focus {
+    outline: none;
+    @apply shadow-sm shadow-black;
+  }
+
+  textarea {
+    border: none;
+  }
+
+  textarea::placeholder {
+    color: inherit;
+    opacity: 0.6;
+  }
+
+  textarea:focus {
+    outline: none;
+    @apply shadow-sm shadow-black;
+  }
+}

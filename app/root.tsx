@@ -1,7 +1,6 @@
 import { Toaster } from 'react-hot-toast'
 import {
   Links,
-  LinksFunction,
   LiveReload,
   LoaderFunction,
   Meta,
@@ -15,9 +14,10 @@ import { authenticator } from './auth/auth.server'
 import { Navigation } from './components/Navigation'
 import { toastOptions } from './lib/toast'
 import openBookImg from './assets/open-book.png'
+import styles from './tailwind.css'
 
-export const links: LinksFunction = () => {
-  return [{ rel: 'stylesheet', href: '/tailwindcss' }]
+export function links() {
+  return [{ rel: 'stylesheet', href: styles }]
 }
 
 export const meta: MetaFunction = () => {
