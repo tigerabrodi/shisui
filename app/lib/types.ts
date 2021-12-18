@@ -11,3 +11,9 @@ export type Assessment = {
   type: QuestionType
   questionsAnswers: QuestionAnswer[]
 }
+
+export type QuestionRoute = 'daily' | 'weekly' | 'monthly'
+
+export type TypeOfDate = 'day' | 'week' | 'month'
+
+export const questionTypes: QuestionRoute[] = ['daily', 'weekly', 'monthly']
