@@ -66,7 +66,7 @@ export default function New() {
 
   return (
     <>
-      <h2 className="heading-two">Assessment for today.</h2>
+      <h2 className="heading-two">Assessment for this month.</h2>
       <Form
         className="w-full h-full flex-col-center"
         action="/monthly/new"
@@ -87,7 +87,7 @@ export default function New() {
               name={title}
               id={String(id)}
               className="w-full bg-black h-20 text-white rounded-sm pl-2 pt-2 font-sans font-normal text-sm md:text-lg md:h-32"
-              placeholder="Today I..."
+              placeholder="This month I..."
             />
           </div>
         ))}
