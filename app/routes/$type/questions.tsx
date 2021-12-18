@@ -20,8 +20,8 @@ import {
   deleteQuestions,
   findQuestions,
 } from '~/db/db-operations'
-import { transformToQuestion } from '~/lib/utils'
-import { QuestionRoute, questionTypes } from '~/lib/types'
+import { doesAnyTypeExistInParams, transformToQuestion } from '~/lib/utils'
+import { QuestionRoute } from '~/lib/types'
 
 export const meta: MetaFunction = ({ data }: { data: LoaderData }) => {
   if (!data) {
@@ -91,7 +91,7 @@ export const loader: LoaderFunction = async ({
 
   const type = params.type as QuestionRoute
 
-  if (!questionTypes.includes(type)) {
+  if (doesAnyTypeExistInParams(type)) {
     throw new Response('Not Found', {
       status: 404,
     })

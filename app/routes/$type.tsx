@@ -1,7 +1,8 @@
 import { LoaderFunction, Outlet, useLoaderData } from 'remix'
 import { authenticator } from '~/auth/auth.server'
 import { BackLink } from '~/components/BackLink'
-import { QuestionRoute, questionTypes } from '~/lib/types'
+import { QuestionRoute } from '~/lib/types'
+import { doesAnyTypeExistInParams } from '~/lib/utils'
 
 type LoaderData = {
   type: QuestionRoute
@@ -18,7 +19,7 @@ export const loader: LoaderFunction = async ({
 
   const type = params.type as QuestionRoute
 
-  if (!questionTypes.includes(type)) {
+  if (doesAnyTypeExistInParams(type)) {
     throw new Response('Not Found', {
       status: 404,
     })

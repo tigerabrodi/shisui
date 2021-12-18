@@ -1,4 +1,5 @@
 import { Question, QuestionType } from '@prisma/client'
+import { QuestionRoute, questionTypes } from './types'
 
 /* 111 % 10 will return 11, hence `modularOfDoubleNumbers` will be 1, but 11 has a suffix of `th`, hence the variable `modularOfTripleNumbers` is necessary to ensure it works at least between 0 - 1000 */
 export const ordinalSuffix = (index: number) => {
@@ -45,3 +46,6 @@ export const toQuestionAnswer = (question: Question, form: FormData) => ({
   question: question.title,
   answer: form.get(question.title) as string,
 })
+
+export const doesAnyTypeExistInParams = (type: QuestionRoute) =>
+  !questionTypes.includes(type)

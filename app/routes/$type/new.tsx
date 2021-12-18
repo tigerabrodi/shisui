@@ -11,8 +11,8 @@ import {
 import { authenticator } from '~/auth/auth.server'
 import { findQuestions } from '~/db/db-operations'
 import { db } from '~/db/db.server'
-import { QuestionRoute, questionTypes, TypeOfDate } from '~/lib/types'
-import { toQuestionAnswer } from '~/lib/utils'
+import { QuestionRoute, TypeOfDate } from '~/lib/types'
+import { doesAnyTypeExistInParams, toQuestionAnswer } from '~/lib/utils'
 
 export const meta: MetaFunction = ({
   data,
@@ -78,7 +78,7 @@ export const loader: LoaderFunction = async ({
 
   const type = params.type as QuestionRoute
 
-  if (!questionTypes.includes(type)) {
+  if (doesAnyTypeExistInParams(type)) {
     throw new Response('Not Found', {
       status: 404,
     })
