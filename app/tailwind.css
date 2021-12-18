@@ -616,6 +616,10 @@ textarea:focus {
   margin-bottom: 0.5rem;
 }
 
+.mt-12 {
+  margin-top: 3rem;
+}
+
 .flex {
   display: flex;
 }
@@ -632,12 +636,12 @@ textarea:focus {
   height: 1.75rem;
 }
 
-.h-9 {
-  height: 2.25rem;
-}
-
 .h-full {
   height: 100%;
+}
+
+.h-9 {
+  height: 2.25rem;
 }
 
 .h-20 {
@@ -765,6 +769,11 @@ textarea:focus {
   padding-bottom: 0.25rem;
 }
 
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 .pl-2 {
   padding-left: 0.5rem;
 }
@@ -828,6 +837,11 @@ textarea:focus {
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .font-normal {
