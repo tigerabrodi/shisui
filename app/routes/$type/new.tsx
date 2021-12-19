@@ -15,6 +15,7 @@ import { findQuestions } from '~/db/db-operations'
 import { db } from '~/db/db.server'
 import { QuestionRoute, TypeOfDate } from '~/lib/types'
 import { doesAnyTypeExistInParams, toQuestionAnswer } from '~/lib/utils'
+import { QuestionAnswerItem } from '~/components/QuestionAnswerItem'
 
 export const meta: MetaFunction = ({
   data,
@@ -108,18 +109,12 @@ export default function New() {
     return (
       <>
         <h2 className="heading-two opacity-70">Written on ........</h2>
-        {questionsAnswers.map(({ question, answer }) => (
-          <article
+        {questionsAnswers.map((questionAnswer) => (
+          <QuestionAnswerItem
             key={v4()}
-            className="w-full min-h-[60px] mt-6 flex flex-col opacity-50 justify-between items-start md:min-h-[80px] md:mt-12"
-          >
-            <h3 className="font-bold font-serif text-lg text-black mb-2 md:text-2xl">
-              {question}
-            </h3>
-            <p className="font-normal text-black font-sans text-base md:text-lg">
-              {answer}
-            </p>
-          </article>
+            questionAnswer={{ ...questionAnswer, id: v4(), assessmentId: v4() }}
+            isOptimisticallyShown
+          />
         ))}
       </>
     )
