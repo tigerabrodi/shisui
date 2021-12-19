@@ -42,15 +42,29 @@ export const loader: LoaderFunction = async ({
   return { type, isQuestionsPage }
 }
 
-export default function Daily() {
+export default function Type() {
   const { type, isQuestionsPage } =
     useLoaderData<Exclude<LoaderData, Response>>()
   const transition = useTransition()
 
+  const allFormQuestions = transition?.submission?.formData.getAll(
+    'question'
+  ) as string[]
+
+  const isAnyFormQuestionsEmpty = allFormQuestions?.some(
+    (question) => !question
+  )
+
+  const shouldShowQuestions = isQuestionsPage && !transition.submission
+  const isSubmissionNotOptimistic =
+    transition.submission && isAnyFormQuestionsEmpty
+
   return (
     <main className="w-72 h-full flex-col-center relative md:w-3/5 lg:w-3/6 xl:w-4/12">
       <h1 className="heading-one">
-        {isQuestionsPage && !transition.submission ? 'Questions' : 'Assessment'}
+        {shouldShowQuestions || isSubmissionNotOptimistic
+          ? 'Questions'
+          : 'Assessment'}
       </h1>
       <BackLink
         to={`/assessments/${type}`}
