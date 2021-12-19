@@ -133,6 +133,7 @@ export default function New() {
           <>
             {questions.map((question) => (
               <AssessmentQuestionItem
+                key={question.id}
                 question={question}
                 typeOfDate={typeOfDate}
               />
