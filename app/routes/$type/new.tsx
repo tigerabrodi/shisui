@@ -13,10 +13,14 @@ import {
 import { authenticator } from '~/auth/auth.server'
 import { findQuestions } from '~/db/db-operations'
 import { db } from '~/db/db.server'
-import { QuestionRoute, TypeOfDate } from '~/lib/types'
+import { QuestionRoute, TypeOfDate, ValidationKey } from '~/lib/types'
 import { doesAnyTypeExistInParams, toQuestionAnswer } from '~/lib/utils'
 import { QuestionAnswerItem } from '~/components/QuestionAnswerItem'
 import { AssessmentQuestionItem } from '~/components/AssessmentQuestionItem'
+import {
+  validationCommitSession,
+  validationGetSession,
+} from '~/lib/validationSession.server'
 
 export const meta: MetaFunction = ({
   data,
@@ -43,6 +47,8 @@ export const action: ActionFunction = async ({ request, params }) => {
     failureRedirect: '/login',
   })
 
+  const session = await validationGetSession(request.headers.get('Cookie'))
+
   const dbQuestionType = (params.type as string).toUpperCase() as QuestionType
   const routeQuestionType = params.type as QuestionType
 
@@ -63,7 +69,13 @@ export const action: ActionFunction = async ({ request, params }) => {
     },
   })
 
-  return redirect(`/${routeQuestionType}/${assessment.id}`)
+  session.flash(ValidationKey.SUCCESS, 'Successfully created assessment!')
+
+  return redirect(`/${routeQuestionType}/${assessment.id}`, {
+    headers: {
+      'Set-Cookie': await validationCommitSession(session),
+    },
+  })
 }
 
 type LoaderData = {
