@@ -79,8 +79,8 @@ export const loader: LoaderFunction = async ({
 }
 
 export default function App() {
-  const { isAuthenticated, sessionSuccess, sessionError } =
-    useLoaderData<LoaderData>()
+  const loaderData = useLoaderData<LoaderData>()
+  const { isAuthenticated, sessionSuccess, sessionError } = loaderData
 
   React.useEffect(() => {
     if (sessionError) {
@@ -90,7 +90,7 @@ export default function App() {
     if (sessionSuccess) {
       toast.success(sessionSuccess)
     }
-  }, [sessionError, sessionSuccess])
+  }, [loaderData])
 
   return (
     <Document>

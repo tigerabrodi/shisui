@@ -3,6 +3,7 @@ import { v4 } from 'uuid'
 import {
   ActionFunction,
   Form,
+  json,
   Link,
   LoaderFunction,
   MetaFunction,
@@ -87,10 +88,12 @@ type LoaderData = {
 export const loader: LoaderFunction = async ({
   request,
   params,
-}): Promise<LoaderData> => {
+}): Promise<Response> => {
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: '/login',
   })
+
+  const session = await validationGetSession(request.headers.get('Cookie'))
 
   const type = params.type as QuestionRoute
 
@@ -106,7 +109,14 @@ export const loader: LoaderFunction = async ({
   const typeOfDate =
     type === 'daily' ? 'day' : type === 'weekly' ? 'week' : 'month'
 
-  return { questions, type, typeOfDate }
+  return json<LoaderData>(
+    { questions, type, typeOfDate },
+    {
+      headers: {
+        'Set-Cookie': await validationCommitSession(session),
+      },
+    }
+  )
 }
 
 export default function New() {
