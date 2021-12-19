@@ -1,6 +1,7 @@
 import {
   ActionFunction,
   Form,
+  json,
   Link,
   LoaderFunction,
   MetaFunction,
@@ -20,8 +21,12 @@ import {
   findQuestions,
 } from '~/db/db-operations'
 import { doesAnyTypeExistInParams, transformToQuestion } from '~/lib/utils'
-import { QuestionRoute } from '~/lib/types'
+import { QuestionRoute, ValidationKey } from '~/lib/types'
 import { AssessmentQuestionItem } from '~/components/AssessmentQuestionItem'
+import {
+  validationCommitSession,
+  validationGetSession,
+} from '~/lib/validationSession.server'
 
 export const meta: MetaFunction = ({ data }: { data: LoaderData }) => {
   if (!data) {
@@ -40,10 +45,12 @@ export const meta: MetaFunction = ({ data }: { data: LoaderData }) => {
 export const action: ActionFunction = async ({
   request,
   params,
-}): Promise<Response> => {
+}): Promise<Response | null> => {
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: '/login',
   })
+
+  const session = await validationGetSession(request.headers.get('Cookie'))
 
   const dbQuestionType = (params.type as string).toUpperCase() as QuestionType
 
@@ -52,8 +59,12 @@ export const action: ActionFunction = async ({
   const isAnyQuestionsEmpty = allQuestionTitles.some((title) => !title)
 
   if (isAnyQuestionsEmpty) {
-    throw new Response('Bad Request', {
-      status: 400,
+    session.flash(ValidationKey.ERROR, 'Please fill in all the questions!')
+
+    return json(null, {
+      headers: {
+        'Set-Cookie': await validationCommitSession(session),
+      },
     })
   }
 
@@ -69,7 +80,16 @@ export const action: ActionFunction = async ({
 
   await createQuestions(questions)
 
-  return redirect(`/${params.type}/new`)
+  session.flash(
+    ValidationKey.SUCCESS,
+    'Questions have been successfully added!'
+  )
+
+  return redirect(`/${params.type}/new`, {
+    headers: {
+      'Set-Cookie': await validationCommitSession(session),
+    },
+  })
 }
 
 type LoaderData = {
@@ -141,7 +161,7 @@ export default function Questions() {
           >
             {allQuestionTitles.map((title, index) => (
               <AssessmentQuestionItem
-                key={v4()}
+                key={index}
                 question={{
                   title,
                   id: index,

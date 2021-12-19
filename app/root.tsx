@@ -1,5 +1,7 @@
-import { Toaster } from 'react-hot-toast'
+import toast, { Toaster } from 'react-hot-toast'
+import * as React from 'react'
 import {
+  json,
   Links,
   LiveReload,
   LoaderFunction,
@@ -15,6 +17,11 @@ import { Navigation } from './components/Navigation'
 import { toastOptions } from './lib/toast'
 import openBookImg from './assets/open-book.png'
 import styles from './tailwind.css'
+import {
+  validationCommitSession,
+  validationGetSession,
+} from '~/lib/validationSession.server'
+import { ValidationKey } from './lib/types'
 
 export function links() {
   return [{ rel: 'stylesheet', href: styles }]
@@ -42,16 +49,48 @@ export const meta: MetaFunction = () => {
 
 type LoaderData = {
   isAuthenticated: boolean
+  sessionError: string | null
+  sessionSuccess: string | null
 }
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({
+  request,
+}): Promise<Response> => {
   const user = await authenticator.isAuthenticated(request)
 
-  return { isAuthenticated: Boolean(user) }
+  const session = await validationGetSession(request.headers.get('Cookie'))
+
+  const questionFormError = (session.get(ValidationKey.ERROR) as string) ?? null
+  const questionFormSuccess =
+    (session.get(ValidationKey.SUCCESS) as string) ?? null
+
+  return json<LoaderData>(
+    {
+      isAuthenticated: Boolean(user),
+      sessionError: questionFormError,
+      sessionSuccess: questionFormSuccess,
+    },
+    {
+      headers: {
+        'Set-Cookie': await validationCommitSession(session),
+      },
+    }
+  )
 }
 
 export default function App() {
-  const { isAuthenticated } = useLoaderData<LoaderData>()
+  const { isAuthenticated, sessionSuccess, sessionError } =
+    useLoaderData<LoaderData>()
+
+  React.useEffect(() => {
+    if (sessionError) {
+      toast.error(sessionError)
+    }
+
+    if (sessionSuccess) {
+      toast.success(sessionSuccess)
+    }
+  }, [sessionError, sessionSuccess])
 
   return (
     <Document>

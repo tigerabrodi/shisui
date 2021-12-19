@@ -3,6 +3,7 @@ export const toastOptions = {
   style: {
     color: '#333333',
     fontWeight: '500',
+    fontFamily: 'Lato',
   },
   success: {
     style: {

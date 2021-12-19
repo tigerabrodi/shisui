@@ -17,3 +17,8 @@ export type QuestionRoute = 'daily' | 'weekly' | 'monthly'
 export type TypeOfDate = 'day' | 'week' | 'month'
 
 export const questionTypes: QuestionRoute[] = ['daily', 'weekly', 'monthly']
+
+export enum ValidationKey {
+  SUCCESS = 'success',
+  ERROR = 'error',
+}
