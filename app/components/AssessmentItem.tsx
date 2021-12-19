@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'remix'
 import { Assessment } from '~/lib/types'
-import { ordinalSuffix } from '~/lib/utils'
+import { formatOrdinals } from '~/lib/utils'
 
 export const AssessmentItem: React.FC<{ assessment: Assessment }> = ({
   assessment,
@@ -12,7 +12,7 @@ export const AssessmentItem: React.FC<{ assessment: Assessment }> = ({
   const createdAtDividedByComma = assessment.createdAt.split(',')
   const dayOfWeek = createdAtDividedByComma[0]
 
-  const dayOfMonthWithSuffix = ordinalSuffix(
+  const dayOfMonthWithSuffix = formatOrdinals(
     Number(createdAtDividedByComma[1].split(' ')[2])
   )
   const monthWithSuffix = `${

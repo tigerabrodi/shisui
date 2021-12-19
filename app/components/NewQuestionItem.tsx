@@ -1,7 +1,7 @@
 import { Trash } from '~/icons/Trash'
 import * as React from 'react'
 import { Question } from '@prisma/client'
-import { ordinalSuffix } from '~/lib/utils'
+import { formatOrdinals } from '~/lib/utils'
 
 type Props = {
   question: Question
@@ -29,7 +29,7 @@ export const NewQuestionItem: React.FC<Props> = ({
   return (
     <div className="w-full flex items-center justify-between mt-5 first-of-type:mt-8 md:first-of-type:mt-10 md:mt-8">
       <label htmlFor={`question-${question.id}`} className="sr-only">
-        {`${ordinalSuffix(order)} question`}
+        {`${formatOrdinals(order)} question`}
       </label>
       <input
         id={`question-${question.id}`}
@@ -37,10 +37,10 @@ export const NewQuestionItem: React.FC<Props> = ({
         type="text"
         defaultValue={question.title}
         placeholder={placeholder}
-        className="text-white bg-black pl-2 text-left font-bold font-serif text-sm w-60 h-7 md:w-9/12 md:h-11 md:text-xl"
+        className="text-white bg-black pl-2 text-left font-bold font-sans text-sm w-60 h-7 md:w-9/12 md:h-11 md:text-xl"
       />
       <button
-        aria-label={`Delete ${ordinalSuffix(order)} question`}
+        aria-label={`Delete ${formatOrdinals(order)} question`}
         className="question-button"
         type="button"
         onClick={() => deleteQuestion(question.id)}
