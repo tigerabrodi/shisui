@@ -1,4 +1,5 @@
 import { Question, QuestionType } from '@prisma/client'
+import { v4 } from 'uuid'
 import {
   ActionFunction,
   Form,
@@ -7,6 +8,7 @@ import {
   MetaFunction,
   redirect,
   useLoaderData,
+  useTransition,
 } from 'remix'
 import { authenticator } from '~/auth/auth.server'
 import { findQuestions } from '~/db/db-operations'
@@ -95,6 +97,33 @@ export const loader: LoaderFunction = async ({
 
 export default function New() {
   const { questions, type, typeOfDate } = useLoaderData<LoaderData>()
+  const transition = useTransition()
+
+  if (transition.submission) {
+    const form = transition.submission.formData
+    const questionsAnswers = questions.map((question) =>
+      toQuestionAnswer(question, form)
+    )
+
+    return (
+      <>
+        <h2 className="heading-two opacity-70">Written on ........</h2>
+        {questionsAnswers.map(({ question, answer }) => (
+          <article
+            key={v4()}
+            className="w-full min-h-[60px] mt-6 flex flex-col opacity-50 justify-between items-start md:min-h-[80px] md:mt-12"
+          >
+            <h3 className="font-bold font-serif text-lg text-black mb-2 md:text-2xl">
+              {question}
+            </h3>
+            <p className="font-normal text-black font-sans text-base md:text-lg">
+              {answer}
+            </p>
+          </article>
+        ))}
+      </>
+    )
+  }
 
   return (
     <>
