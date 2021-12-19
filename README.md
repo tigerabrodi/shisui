@@ -11,22 +11,28 @@ This project uses 7 environment variables. 🤠
 <br>
 Create a `.env` file in the root folder. 💫
 <br>
-<br>
+
 The environment variables it should have:
 <br>
-<br>
+
 `AUTH_SECRET`
 <br>
+
 `GOOGLE_CLIENT_ID`
 <br>
+
 `GOOGLE_CLIENT_SECRET`
 <br>
+
 `GOOGLE_CALLBACK_URL`
 <br>
+
 `SHADOW_DATABASE_URL`
 <br>
+
 `DATABASE_URL`
 <br>
+
 `AUTH_SECRET`
 <br>
 
