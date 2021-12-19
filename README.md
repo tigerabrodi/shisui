@@ -1,6 +1,6 @@
 # Shisui ✍️
 
-Become better than your past by regularly assessing yourself and holding yourself accountable. 🗒️
+Become better than your past by regularly assessing yourself and holding yourself accountable. 💪
 
 ## Installation 🛠️
 
