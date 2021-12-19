@@ -16,6 +16,7 @@ import { db } from '~/db/db.server'
 import { QuestionRoute, TypeOfDate } from '~/lib/types'
 import { doesAnyTypeExistInParams, toQuestionAnswer } from '~/lib/utils'
 import { QuestionAnswerItem } from '~/components/QuestionAnswerItem'
+import { AssessmentQuestionItem } from '~/components/AssessmentQuestionItem'
 
 export const meta: MetaFunction = ({
   data,
@@ -130,24 +131,11 @@ export default function New() {
       >
         {questions.length ? (
           <>
-            {questions.map(({ title, id }) => (
-              <div
-                key={id}
-                className="w-full min-h-[128px] mt-6 flex flex-col justify-between items-start md:min-h-[190px] md:mt-12"
-              >
-                <label
-                  htmlFor={String(id)}
-                  className="font-bold font-serif text-lg text-black md:text-2xl"
-                >
-                  {title}
-                </label>
-                <textarea
-                  name={title}
-                  id={String(id)}
-                  className="w-full bg-black h-20 text-white rounded-sm pl-2 pt-2 font-sans font-normal text-sm md:text-lg md:h-32"
-                  placeholder={`This ${typeOfDate} I...`}
-                />
-              </div>
+            {questions.map((question) => (
+              <AssessmentQuestionItem
+                question={question}
+                typeOfDate={typeOfDate}
+              />
             ))}
             <div className="mt-auto w-60 flex items-center justify-between pb-10 pt-8 md:w-5/6 md:pb-32 md:pt-16">
               <Link to="/assessments/weekly" className="bottom-button-link">

@@ -21,6 +21,7 @@ import {
 } from '~/db/db-operations'
 import { doesAnyTypeExistInParams, transformToQuestion } from '~/lib/utils'
 import { QuestionRoute } from '~/lib/types'
+import { AssessmentQuestionItem } from '~/components/AssessmentQuestionItem'
 
 export const meta: MetaFunction = ({ data }: { data: LoaderData }) => {
   if (!data) {
@@ -121,7 +122,9 @@ export default function Questions() {
   }
 
   if (transition.submission) {
-    const allQuestionTitles = transition.submission.formData.getAll('question')
+    const allQuestionTitles = transition.submission.formData.getAll(
+      'question'
+    ) as string[]
     const areAllQuestionsFilled = allQuestionTitles.every((title) => title)
 
     const typeOfDate =
@@ -136,20 +139,18 @@ export default function Questions() {
             action={`/${type}/new`}
             method="post"
           >
-            {allQuestionTitles.map((title) => (
-              <div
+            {allQuestionTitles.map((title, index) => (
+              <AssessmentQuestionItem
                 key={v4()}
-                className="w-full min-h-[128px] mt-6 flex flex-col justify-between items-start opacity-80 md:min-h-[190px] md:mt-12"
-              >
-                <label className="font-bold font-serif text-lg text-black md:text-2xl opacity-80">
-                  {title}
-                </label>
-                <textarea
-                  className="w-full bg-black h-20 text-white rounded-sm pl-2 pt-2 font-sans font-normal opacity-80 text-sm md:text-lg md:h-32"
-                  placeholder={`This ${typeOfDate} I...`}
-                  disabled
-                />
-              </div>
+                question={{
+                  title,
+                  id: index,
+                  userId: v4(),
+                  type: dbQuestionType,
+                }}
+                typeOfDate={typeOfDate}
+                isOptimisticallyShown
+              />
             ))}
             <div className="mt-auto w-60 flex items-center justify-between pb-10 pt-8 md:w-5/6 md:pb-32 md:pt-16">
               <Link
