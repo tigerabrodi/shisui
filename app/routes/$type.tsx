@@ -1,4 +1,10 @@
-import { LoaderFunction, Outlet, redirect, useLoaderData } from 'remix'
+import {
+  LoaderFunction,
+  Outlet,
+  redirect,
+  useLoaderData,
+  useTransition,
+} from 'remix'
 import { authenticator } from '~/auth/auth.server'
 import { BackLink } from '~/components/BackLink'
 import { QuestionRoute } from '~/lib/types'
@@ -39,11 +45,12 @@ export const loader: LoaderFunction = async ({
 export default function Daily() {
   const { type, isQuestionsPage } =
     useLoaderData<Exclude<LoaderData, Response>>()
+  const transition = useTransition()
 
   return (
     <main className="w-72 h-full flex-col-center relative md:w-3/5 lg:w-3/6 xl:w-4/12">
       <h1 className="heading-one">
-        {isQuestionsPage ? 'Questions' : 'Assessment'}
+        {isQuestionsPage && !transition.submission ? 'Questions' : 'Assessment'}
       </h1>
       <BackLink
         to={`/assessments/${type}`}

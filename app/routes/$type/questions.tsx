@@ -4,9 +4,9 @@ import {
   Link,
   LoaderFunction,
   MetaFunction,
-  useActionData,
+  redirect,
   useLoaderData,
-  useNavigate,
+  useTransition,
 } from 'remix'
 import { v4 } from 'uuid'
 import * as React from 'react'
@@ -14,7 +14,6 @@ import { authenticator } from '~/auth/auth.server'
 import { Add } from '~/icons/Add'
 import { Question, QuestionType } from '@prisma/client'
 import { QuestionInput } from '~/components/QuestionInput'
-import toast from 'react-hot-toast'
 import {
   createQuestions,
   deleteQuestions,
@@ -37,15 +36,10 @@ export const meta: MetaFunction = ({ data }: { data: LoaderData }) => {
   }
 }
 
-type ActionData = {
-  isError?: boolean
-  isSuccess?: boolean
-}
-
 export const action: ActionFunction = async ({
   request,
   params,
-}): Promise<ActionData> => {
+}): Promise<Response> => {
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: '/login',
   })
@@ -57,7 +51,9 @@ export const action: ActionFunction = async ({
   const isAnyQuestionsEmpty = allQuestionTitles.some((title) => !title)
 
   if (isAnyQuestionsEmpty) {
-    return { isError: true }
+    throw new Response('Bad Request', {
+      status: 400,
+    })
   }
 
   await deleteQuestions(user.id, dbQuestionType)
@@ -72,7 +68,7 @@ export const action: ActionFunction = async ({
 
   await createQuestions(questions)
 
-  return { isSuccess: true }
+  return redirect(`/${params.type}/new`)
 }
 
 type LoaderData = {
@@ -109,9 +105,8 @@ export const loader: LoaderFunction = async ({
 }
 
 export default function Questions() {
-  const actionData = useActionData<ActionData>()
   const { loaderQuestions, type, dbQuestionType } = useLoaderData<LoaderData>()
-  const navigate = useNavigate()
+  const transition = useTransition()
   const [questions, setQuestions] = React.useState<Question[]>(loaderQuestions)
 
   const deleteQuestion = (questionId: number) => {
@@ -125,18 +120,57 @@ export default function Questions() {
     ] as Question[])
   }
 
-  React.useEffect(() => {
-    if (actionData?.isError) {
-      toast.error('Please fill in all the questions you added.')
-      actionData.isError = false
-    }
+  if (transition.submission) {
+    const allQuestionTitles = transition.submission.formData.getAll('question')
+    const areAllQuestionsFilled = allQuestionTitles.every((title) => title)
 
-    if (actionData?.isSuccess) {
-      toast.success('Questions have successfully been saved!')
-      actionData.isSuccess = false
-      navigate(`/${type}/new`)
+    const typeOfDate =
+      type === 'daily' ? 'day' : type === 'weekly' ? 'week' : 'month'
+
+    if (areAllQuestionsFilled) {
+      return (
+        <>
+          <h2 className="heading-two">Assessment for this {typeOfDate}.</h2>
+          <Form
+            className="w-full h-full flex-col-center"
+            action={`/${type}/new`}
+            method="post"
+          >
+            {allQuestionTitles.map((title) => (
+              <div
+                key={v4()}
+                className="w-full min-h-[128px] mt-6 flex flex-col justify-between items-start opacity-80 md:min-h-[190px] md:mt-12"
+              >
+                <label className="font-bold font-serif text-lg text-black md:text-2xl opacity-80">
+                  {title}
+                </label>
+                <textarea
+                  className="w-full bg-black h-20 text-white rounded-sm pl-2 pt-2 font-sans font-normal opacity-80 text-sm md:text-lg md:h-32"
+                  placeholder={`This ${typeOfDate} I...`}
+                  disabled
+                />
+              </div>
+            ))}
+            <div className="mt-auto w-60 flex items-center justify-between pb-10 pt-8 md:w-5/6 md:pb-32 md:pt-16">
+              <Link
+                to={`/${type}/questions`}
+                className="bottom-button-link opacity-80"
+              >
+                Cancel
+              </Link>
+              <button
+                className="bottom-button-link button-active opacity-80"
+                type="submit"
+                disabled
+              >
+                Save
+              </button>
+            </div>
+          </Form>
+        </>
+      )
     }
-  }, [actionData?.isError, actionData?.isSuccess])
+  }
 
   return (
     <>
