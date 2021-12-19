@@ -7,8 +7,8 @@ Become better than your past by regularly assessing yourself and holding yoursel
 After cloning the project, you need to run `npm install` 🔧
 
 This project uses 7 environment variables. 🤠
-
 <br>
+
 Create a `.env` file in the root folder. 💫
 <br>
 
