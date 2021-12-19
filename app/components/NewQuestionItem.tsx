@@ -10,7 +10,7 @@ type Props = {
 }
 
 /* `order` is the index + 1, since we want to track the position for the users and not really the index itself. */
-export const QuestionInput: React.FC<Props> = ({
+export const NewQuestionItem: React.FC<Props> = ({
   question,
   order,
   deleteQuestion,

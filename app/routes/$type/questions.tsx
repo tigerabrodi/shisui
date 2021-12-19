@@ -13,7 +13,7 @@ import * as React from 'react'
 import { authenticator } from '~/auth/auth.server'
 import { Add } from '~/icons/Add'
 import { Question, QuestionType } from '@prisma/client'
-import { QuestionInput } from '~/components/QuestionInput'
+import { NewQuestionItem } from '~/components/NewQuestionItem'
 import {
   createQuestions,
   deleteQuestions,
@@ -181,7 +181,7 @@ export default function Questions() {
         className="w-full h-full flex-col-center"
       >
         {questions.map((question, index) => (
-          <QuestionInput
+          <NewQuestionItem
             key={question.id}
             order={index + 1}
             question={question}
