@@ -3,7 +3,6 @@ import { v4 } from 'uuid'
 import {
   ActionFunction,
   Form,
-  json,
   Link,
   LoaderFunction,
   MetaFunction,
@@ -14,14 +13,14 @@ import {
 import { authenticator } from '~/auth/auth.server'
 import { findQuestions } from '~/db/db-operations'
 import { db } from '~/db/db.server'
-import { QuestionRoute, TypeOfDate, ValidationKey } from '~/lib/types'
-import { doesAnyTypeExistInParams, toQuestionAnswer } from '~/lib/utils'
+import { QuestionRoute, TypeOfDate } from '~/lib/types'
+import {
+  convertToDate,
+  doesAnyTypeExistInParams,
+  toQuestionAnswer,
+} from '~/lib/utils'
 import { QuestionAnswerItem } from '~/components/QuestionAnswerItem'
 import { AssessmentQuestionItem } from '~/components/AssessmentQuestionItem'
-import {
-  validationCommitSession,
-  validationGetSession,
-} from '~/lib/validationSession.server'
 
 export const meta: MetaFunction = ({
   data,
@@ -48,8 +47,6 @@ export const action: ActionFunction = async ({ request, params }) => {
     failureRedirect: '/login',
   })
 
-  const session = await validationGetSession(request.headers.get('Cookie'))
-
   const dbQuestionType = (params.type as string).toUpperCase() as QuestionType
   const routeQuestionType = params.type as QuestionType
 
@@ -70,13 +67,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     },
   })
 
-  session.flash(ValidationKey.SUCCESS, 'Successfully created assessment!')
-
-  return redirect(`/${routeQuestionType}/${assessment.id}`, {
-    headers: {
-      'Set-Cookie': await validationCommitSession(session),
-    },
-  })
+  return redirect(`/${routeQuestionType}/${assessment.id}`)
 }
 
 type LoaderData = {
@@ -88,12 +79,10 @@ type LoaderData = {
 export const loader: LoaderFunction = async ({
   request,
   params,
-}): Promise<Response> => {
+}): Promise<LoaderData> => {
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: '/login',
   })
-
-  const session = await validationGetSession(request.headers.get('Cookie'))
 
   const type = params.type as QuestionRoute
 
@@ -109,14 +98,7 @@ export const loader: LoaderFunction = async ({
   const typeOfDate =
     type === 'daily' ? 'day' : type === 'weekly' ? 'week' : 'month'
 
-  return json<LoaderData>(
-    { questions, type, typeOfDate },
-    {
-      headers: {
-        'Set-Cookie': await validationCommitSession(session),
-      },
-    }
-  )
+  return { questions, type, typeOfDate }
 }
 
 export default function New() {
@@ -129,14 +111,15 @@ export default function New() {
       toQuestionAnswer(question, form)
     )
 
+    const date = new Date()
+
     return (
       <>
-        <h2 className="heading-two opacity-70">Written on ........</h2>
+        <h2 className="heading-two">Written on {convertToDate(date)} </h2>
         {questionsAnswers.map((questionAnswer) => (
           <QuestionAnswerItem
             key={v4()}
             questionAnswer={{ ...questionAnswer, id: v4(), assessmentId: v4() }}
-            isOptimisticallyShown
           />
         ))}
       </>
