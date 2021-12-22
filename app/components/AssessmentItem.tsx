@@ -25,6 +25,7 @@ export const AssessmentItem: React.FC<{ assessment: Assessment }> = ({
       <Link
         to={assessmentDetailRoute}
         className="text-white font-sans text-xs font-normal hover:underline md:text-lg"
+        prefetch="intent"
       >
         Written on {dayOfWeek}, {monthWithSuffix}
       </Link>
