@@ -80,16 +80,7 @@ export const action: ActionFunction = async ({
 
   await createQuestions(questions)
 
-  /*   session.flash(
-    ValidationKey.SUCCESS,
-    'Questions have been successfully added!'
-  ) */
-
-  return redirect(`/${params.type}/new`, {
-    headers: {
-      'Set-Cookie': await validationCommitSession(session),
-    },
-  })
+  return redirect(`/${params.type}/new`)
 }
 
 type LoaderData = {
