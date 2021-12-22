@@ -1,5 +1,4 @@
 import { Question, QuestionType } from '@prisma/client'
-import { v4 } from 'uuid'
 import {
   ActionFunction,
   Form,
@@ -116,10 +115,10 @@ export default function New() {
     return (
       <>
         <h2 className="heading-two">Written on {convertToDate(date)} </h2>
-        {questionsAnswers.map((questionAnswer) => (
+        {questionsAnswers.map((questionAnswer, index) => (
           <QuestionAnswerItem
-            key={v4()}
-            questionAnswer={{ ...questionAnswer, id: v4(), assessmentId: v4() }}
+            key={index}
+            questionAnswer={{ ...questionAnswer }}
           />
         ))}
       </>
