@@ -80,10 +80,10 @@ export const action: ActionFunction = async ({
 
   await createQuestions(questions)
 
-  session.flash(
+  /*   session.flash(
     ValidationKey.SUCCESS,
     'Questions have been successfully added!'
-  )
+  ) */
 
   return redirect(`/${params.type}/new`, {
     headers: {
@@ -169,20 +169,15 @@ export default function Questions() {
                   type: dbQuestionType,
                 }}
                 typeOfDate={typeOfDate}
-                isOptimisticallyShown
               />
             ))}
             <div className="mt-auto w-60 flex items-center justify-between pb-10 pt-8 md:w-5/6 md:pb-32 md:pt-16">
-              <Link
-                to={`/${type}/questions`}
-                className="bottom-button-link opacity-80"
-              >
+              <Link to={`/${type}/questions`} className="bottom-button-link">
                 Cancel
               </Link>
               <button
-                className="bottom-button-link button-active opacity-80"
+                className="bottom-button-link button-active"
                 type="submit"
-                disabled
               >
                 Save
               </button>
