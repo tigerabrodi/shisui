@@ -40,7 +40,7 @@ model Assessment {
 }
 
 model QuestionAnswer {
-  id           String   @id @default(uuid())
+  id           Int   @id @default(autoincrement())
   question     String
   answer       String
   assessment   Assessment @relation(fields: [assessmentId], references: [id])
