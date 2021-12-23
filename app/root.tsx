@@ -50,7 +50,6 @@ export const meta: MetaFunction = () => {
 type LoaderData = {
   isAuthenticated: boolean
   sessionError: string | null
-  sessionSuccess: string | null
 }
 
 export const loader: LoaderFunction = async ({
@@ -61,14 +60,11 @@ export const loader: LoaderFunction = async ({
   const session = await validationGetSession(request.headers.get('Cookie'))
 
   const questionFormError = (session.get(ValidationKey.ERROR) as string) ?? null
-  const questionFormSuccess =
-    (session.get(ValidationKey.SUCCESS) as string) ?? null
 
   return json<LoaderData>(
     {
       isAuthenticated: Boolean(user),
       sessionError: questionFormError,
-      sessionSuccess: questionFormSuccess,
     },
     {
       headers: {
@@ -80,15 +76,11 @@ export const loader: LoaderFunction = async ({
 
 export default function App() {
   const loaderData = useLoaderData<LoaderData>()
-  const { isAuthenticated, sessionSuccess, sessionError } = loaderData
+  const { isAuthenticated, sessionError } = loaderData
 
   React.useEffect(() => {
     if (sessionError) {
       toast.error(sessionError)
-    }
-
-    if (sessionSuccess) {
-      toast.success(sessionSuccess)
     }
   }, [loaderData])
 
